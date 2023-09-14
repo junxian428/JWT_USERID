@@ -74,6 +74,7 @@ public List<Questions> allQuestions(){
                     return "Quiz Completed";
                 } else{
                     System.out.println("Next question");
+                    // Next Question
                     tokenMapper.updateCurrentUserQuestion(Integer.parseInt(questionid) + 1, Integer.parseInt(userid));
                 }
                 //System.out.println(tokenMapper.countQuestions());
@@ -112,20 +113,24 @@ public List<Questions> allQuestions(){
             return  tokenMapper.findLargestQuestionForUser(Integer.valueOf(useridString));
         }
 
+        @GetMapping("/getMark/{userid}")
+        public String getUserMark(@PathVariable String userid) {
+            return  Integer.toString(tokenMapper.CurrentMark(Integer.parseInt(userid)));
+        }
 
 
         @GetMapping("question/{userId}")
         public List<Question> getUserQuestion(@PathVariable String userId) {
             int totalQuestion = tokenMapper.countQuestions();
-            int largestQuestionId = tokenMapper.getLargestQuestionIdForId(Integer.valueOf(userId));
+            String largestQuestionId = tokenMapper.getLargestQuestionIdForId(Integer.valueOf(userId));
                 List<Question> result = new ArrayList<>();
-//System.out.println("The largest questionid for id 102 is: " + largestQuestionId);
-            if(totalQuestion == largestQuestionId || largestQuestionId >= totalQuestion){
+                //System.out.println("The largest questionid for id 102 is: " + largestQuestionId);
+                System.out.println("Total Question : " + totalQuestion);
+                System.out.println("Total User Question :" + largestQuestionId);
+            if(Integer.valueOf(totalQuestion).equals(largestQuestionId)){
                 System.out.println("Quiz Completed");
                 Question completedQuestion = new Question();
                 completedQuestion.setQuestion("Quiz completed");
-                completedQuestion.setId(999);
-                result.add(completedQuestion);
                 return result;
             } else{
                 return tokenMapper.getUserQuestion(userId);

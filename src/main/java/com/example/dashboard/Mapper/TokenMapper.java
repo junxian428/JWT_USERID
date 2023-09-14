@@ -56,8 +56,8 @@ public interface TokenMapper {
     int countQuestions();
 
 
-    @Select("SELECT MAX(questionid) FROM currentuserquestion WHERE id = #{id}")
-    int getLargestQuestionIdForId(@Param("id") int id);
+    @Select("SELECT questionid FROM currentuserquestion WHERE userid = #{userid}")
+    String getLargestQuestionIdForId(@Param("userid") int id);
 
     @Select("SELECT questionid FROM useranswer WHERE userid = #{userId} ORDER BY questionid DESC LIMIT 1;")
     String findLargestQuestionForUser(int userId);    
