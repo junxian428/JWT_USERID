@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import com.example.dashboard.Entity.Email;
 import com.example.dashboard.Entity.Question;
 import com.example.dashboard.Entity.Questions;
 import com.example.dashboard.Entity.Token;
@@ -25,12 +26,18 @@ public interface TokenMapper {
      @Select("SELECT * FROM _user WHERE id = #{userid} ")
     User getUserByUserID(String userid);
 
-    @Select("SELECT firstname, lastname FROM _user WHERE id = #{userid} ")
-    Username getUserNameByID(String id);
+    @Select("SELECT email FROM _user WHERE id = #{userid} ")
+    String getUserNameByID(String id);
 
     @Select("SELECT * FROM questions")
     List<Questions> getAllQuestion();
 
+    @Select("SELECT email FROM _user")
+    List<Email> getAllUserEmail();
+    
+    @Update("UPDATE _user SET email = #{newEmail} WHERE id = #{userId}")
+    void updateEmailByID(@Param("userId") String userId, @Param("newEmail") String newEmail);
+    
 
     @Select("SELECT questionid FROM currentuserquestion WHERE userid = #{userid} ")
     String getCurrentQuestion(String id);

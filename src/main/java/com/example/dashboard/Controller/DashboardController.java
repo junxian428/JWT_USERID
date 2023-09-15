@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.dashboard.Entity.Email;
 import com.example.dashboard.Entity.Question;
 import com.example.dashboard.Entity.Questions;
 import com.example.dashboard.Entity.Token;
@@ -61,6 +62,42 @@ public List<Questions> allQuestions(){
         public String getCurrentQuestion() {
             return Integer.toString(tokenMapper.countQuestions());
         }
+
+
+        @GetMapping("/USERNAME/{userId}")
+        public String getUsernameFromID(@PathVariable String userId) {
+            return tokenMapper.getUserNameByID(userId);
+        }
+
+        
+        @PostMapping("/Email/{userId}/{newEmail}")
+        public String updateEmail(@PathVariable String userId,@PathVariable String newEmail) {
+            try{
+                
+                List<Email> allUserEmail = tokenMapper.getAllUserEmail();
+
+            for (Email email : allUserEmail) {
+                System.out.println("Email Address: " + email.getEmail());
+                if(email.getEmail().equals(newEmail)){
+                    System.out.println("Your username is taken");
+                    return "Your username is taken";
+                } else{
+                    tokenMapper.updateEmailByID(userId,  newEmail);
+
+                }
+            }  
+
+              
+            
+            return "Success";
+            }catch(Exception ex){
+                return "Fail message : " + ex;
+
+            }
+
+        }
+        
+        
 
 
 
